@@ -236,21 +236,34 @@ window.addEventListener('pointermove', function(e){
 }, {passive:true});
 
 var hero = document.querySelector('.hero-visual');
-var stage = document.querySelector('.orbit-stage');
 var mock = document.querySelector('.phone-mock');
-if (hero && stage) {
-  hero.addEventListener('pointerenter', function(){ stage.dataset.held = '1'; });
+var hovX = 0, hovY = 0, parY = 0;
+function renderMock(){
+  if (!mock) return;
+  mock.style.transform = 'perspective(900px) translateY(' + parY.toFixed(1) + 'px) rotateX(' + (-hovY * 7).toFixed(2) + 'deg) rotateY(' + (hovX * 9).toFixed(2) + 'deg) translateZ(-26px)';
+}
+if (hero) {
   hero.addEventListener('pointermove', function(e){
     var r = hero.getBoundingClientRect();
-    var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-    stage.style.transform = 'rotateX(' + (58 - y * 14).toFixed(2) + 'deg) rotateZ(' + (-8 + x * 10).toFixed(2) + 'deg) scale(1.04)';
-    if (mock) mock.style.transform = 'perspective(900px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 9).toFixed(2) + 'deg)';
+    hovX = (e.clientX - r.left) / r.width - 0.5; hovY = (e.clientY - r.top) / r.height - 0.5;
+    hero.style.transform = 'rotateX(' + (-hovY * 5).toFixed(2) + 'deg) rotateY(' + (hovX * 6).toFixed(2) + 'deg)';
+    renderMock();
   });
   hero.addEventListener('pointerleave', function(){
-    delete stage.dataset.held;
-    stage.style.transform = '';
-    if (mock) mock.style.transform = '';
+    hovX = 0; hovY = 0;
+    hero.style.transform = '';
+    renderMock();
   });
+  var tick = false;
+  window.addEventListener('scroll', function(){
+    if (tick) return; tick = true;
+    requestAnimationFrame(function(){
+      tick = false;
+      var y = window.scrollY || 0;
+      parY = Math.max(-26, Math.min(0, -y * 0.05));
+      renderMock();
+    });
+  }, {passive:true});
 }
 
 var cards = document.querySelectorAll('.offer-card, .shelf');
