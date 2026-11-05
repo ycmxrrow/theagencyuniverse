@@ -9,7 +9,7 @@
   --holo:linear-gradient(100deg,#C9A24B 0%,#F9E08A 18%,#F0ABFC 38%,#93C5FD 55%,#6EE7B7 72%,#FABF2D 88%,#C9A24B 100%);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:66px}
 body{
   font-family:"Inter","Segoe UI",Helvetica,Arial,sans-serif;color:var(--body-text);line-height:1.55;
   padding-bottom:64px;background-color:var(--bg);
