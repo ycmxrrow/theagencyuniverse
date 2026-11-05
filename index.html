@@ -21,6 +21,9 @@
 <meta name="twitter:image" content="https://theagencyuniverse.com/og-image.png">
 <link rel="icon" type="image/png" href="agency-universe-logo-icon.png">
 <link rel="apple-touch-icon" href="agency-universe-logo-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -212,11 +215,44 @@
 <a class="sticky-call" href="tel:+12693130843">Call 269-313-0843 — first look free</a>
 
 <script>
-/* Card tilt + foil sheen — fine pointers only, reduced-motion safe. */
+/* Holo + 3D engine — pointer-reactive foil, hero parallax layers, card tilt.
+   Fine pointers only; fully inert under prefers-reduced-motion. */
 (function(){
 var fine = window.matchMedia && matchMedia('(pointer: fine)').matches;
 var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!fine || calm) return;
+var root = document.documentElement;
+var px = 0.5, py = 0.5, tx = 0.5, ty = 0.5, raf = null;
+function loop(){
+  px += (tx - px) * 0.08; py += (ty - py) * 0.08;
+  root.style.setProperty('--px', px.toFixed(4));
+  root.style.setProperty('--py', py.toFixed(4));
+  if (Math.abs(tx - px) > 0.0005 || Math.abs(ty - py) > 0.0005) { raf = requestAnimationFrame(loop); }
+  else { raf = null; }
+}
+window.addEventListener('pointermove', function(e){
+  tx = e.clientX / window.innerWidth; ty = e.clientY / window.innerHeight;
+  if (!raf) raf = requestAnimationFrame(loop);
+}, {passive:true});
+
+var hero = document.querySelector('.hero-visual');
+var stage = document.querySelector('.orbit-stage');
+var mock = document.querySelector('.phone-mock');
+if (hero && stage) {
+  hero.addEventListener('pointerenter', function(){ stage.dataset.held = '1'; });
+  hero.addEventListener('pointermove', function(e){
+    var r = hero.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+    stage.style.transform = 'rotateX(' + (58 - y * 14).toFixed(2) + 'deg) rotateZ(' + (-8 + x * 10).toFixed(2) + 'deg) scale(1.04)';
+    if (mock) mock.style.transform = 'perspective(900px) rotateX(' + (-y * 7).toFixed(2) + 'deg) rotateY(' + (x * 9).toFixed(2) + 'deg)';
+  });
+  hero.addEventListener('pointerleave', function(){
+    delete stage.dataset.held;
+    stage.style.transform = '';
+    if (mock) mock.style.transform = '';
+  });
+}
+
 var cards = document.querySelectorAll('.offer-card, .shelf');
 cards.forEach(function(card){
   card.addEventListener('pointermove', function(e){
@@ -224,7 +260,7 @@ cards.forEach(function(card){
     var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
     card.style.setProperty('--mx', (x * 100) + '%');
     card.style.setProperty('--my', (y * 100) + '%');
-    card.style.transform = 'perspective(800px) rotateX(' + ((0.5 - y) * 7).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 9).toFixed(2) + 'deg) translateY(-3px)';
+    card.style.transform = 'perspective(900px) rotateX(' + ((0.5 - y) * 8).toFixed(2) + 'deg) rotateY(' + ((x - 0.5) * 10).toFixed(2) + 'deg) translateY(-4px)';
   });
   card.addEventListener('pointerleave', function(){ card.style.transform = ''; });
 });
@@ -245,7 +281,7 @@ cards.forEach(function(card){
   function update(){
     ticking = false;
     var y = window.scrollY || 0;
-    if (orbit) {
+    if (orbit && !orbit.dataset.held) {
       var p = Math.min(y / 620, 1);
       orbit.style.transform = 'rotateX(' + (p*26) + 'deg) rotateZ(' + (p*38) + 'deg) scale(' + (1 - p*0.16) + ')';
       orbit.style.opacity = String(1 - p*0.35);
