@@ -54,13 +54,13 @@
     </div>
     <div class="hero-visual" aria-hidden="true">
       <div class="orbit-stage" data-hero-orbit>
-        <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
+        <span class="ring r4"></span><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
         <img src="agency-universe-logo-icon.png" alt="" width="150" height="150">
       </div>
       <div class="phone-mock">
         <p class="pm-name">Northline Heating &amp; Cooling</p>
         <p class="pm-line">Furnace out? We answer.</p>
-        <p class="pm-btn">TAP TO CALL</p>
+        <a class="pm-btn" href="tel:+12693130843">TAP TO CALL</a>
         <p class="pm-note">Sample page — the one your customers wish you had</p>
       </div>
     </div>
@@ -88,7 +88,7 @@
         <div class="mock mock-new">
           <p class="mn-name">Northline Heating &amp; Cooling</p>
           <p class="mn-head">Furnace out in Grand Rapids? We're already nearby.</p>
-          <p class="mn-btn">TAP TO CALL — 269-313-0843</p>
+          <a class="mn-btn" href="tel:+12693130843">TAP TO CALL — 269-313-0843</a>
           <p class="mn-row">Open Mon–Fri 9–5 · Heating · Cooling · Service calls</p>
         </div>
         <p class="ba-verdict">One page. One job: turn a search into a call. Big type, big button, nothing in the way.</p>
@@ -115,14 +115,14 @@
         <p class="offer-outcome">So the listing people actually find has the right hours, right category, right link.</p>
         <p class="offer-price">$249 <span>one-time</span></p>
         <p class="offer-proof">Full audit and correction of your Google Business Profile. Keep it current with management at $250/mo — or bundle both below.</p>
-        <a class="btn btn-navy" href="https://ycmxrrow.github.io/agency-universe/">See how it works</a>
+        <a class="btn btn-navy" href="tel:+12693130843">Call — fix my listing</a>
       </article>
       <article class="offer-card" data-reveal>
         <h3>Care + Listing Bundle</h3>
         <p class="offer-outcome">So your site and listing stay right while you run your business, not your website.</p>
         <p class="offer-price">$399<span>/mo</span></p>
         <p class="offer-proof">Website care ($300–500/mo alone) plus listing management, bundled. Plain-English report every month — what changed, in words, not dashboards.</p>
-        <a class="btn btn-navy" href="mailto:theagencyuniverse@gmail.com">Email the studio</a>
+        <a class="btn btn-navy" href="tel:+12693130843">Call — start the bundle</a>
       </article>
     </div>
   </section>
@@ -237,23 +237,12 @@ window.addEventListener('pointermove', function(e){
 
 var hero = document.querySelector('.hero-visual');
 var mock = document.querySelector('.phone-mock');
-var hovX = 0, hovY = 0, parY = 0;
+var parY = 0;
 function renderMock(){
   if (!mock) return;
-  mock.style.transform = 'perspective(900px) translateY(' + parY.toFixed(1) + 'px) rotateX(' + (-hovY * 7).toFixed(2) + 'deg) rotateY(' + (hovX * 9).toFixed(2) + 'deg) translateZ(-26px)';
+  mock.style.transform = 'perspective(900px) translateY(' + parY.toFixed(1) + 'px) translateZ(-26px)';
 }
 if (hero) {
-  hero.addEventListener('pointermove', function(e){
-    var r = hero.getBoundingClientRect();
-    hovX = (e.clientX - r.left) / r.width - 0.5; hovY = (e.clientY - r.top) / r.height - 0.5;
-    hero.style.transform = 'rotateX(' + (-hovY * 5).toFixed(2) + 'deg) rotateY(' + (hovX * 6).toFixed(2) + 'deg)';
-    renderMock();
-  });
-  hero.addEventListener('pointerleave', function(){
-    hovX = 0; hovY = 0;
-    hero.style.transform = '';
-    renderMock();
-  });
   var tick = false;
   window.addEventListener('scroll', function(){
     if (tick) return; tick = true;
