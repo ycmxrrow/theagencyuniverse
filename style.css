@@ -72,14 +72,36 @@ img{max-width:100%}
 .doors h2,.about h2,.contact h2{font-size:36px;text-align:center;margin:10px 0 30px}
 .about h2,.contact h2{margin-bottom:18px}
 
-/* doors */
-.door-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.door{display:flex;flex-direction:column;gap:9px;padding:26px 24px;border-radius:16px;text-decoration:none;color:var(--text);position:relative;background:linear-gradient(180deg,#182238,#101828);box-shadow:0 22px 44px rgba(0,0,0,.42), 0 4px 12px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.07), inset 0 -14px 26px rgba(0,0,0,.28);transition:transform .18s ease, box-shadow .18s ease}
+/* doors — actual doorways: a brass-plated leaf swings out from a lit room.
+   The summary under each doorway stays visible, so the grid still reads
+   as a directory before anyone opens a door. */
+.door-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 22px}
+.door{display:flex;flex-direction:column;padding:16px 16px 6px;border-radius:16px;text-decoration:none;color:var(--text);position:relative;background:linear-gradient(180deg,#182238,#101828);box-shadow:0 22px 44px rgba(0,0,0,.42), 0 4px 12px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.07), inset 0 -14px 26px rgba(0,0,0,.28);transition:transform .18s ease, box-shadow .18s ease}
 .door::before{content:"";position:absolute;inset:0;border-radius:16px;padding:1px;background:conic-gradient(from 180deg,rgba(201,162,75,.55),rgba(125,211,252,.28),rgba(240,171,252,.28),rgba(201,162,75,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.door:hover,.door:focus-visible{z-index:3}
 .door:hover{transform:translateY(-4px);box-shadow:0 30px 56px rgba(0,0,0,.5), 0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.09), inset 0 -14px 26px rgba(0,0,0,.28)}
-.door-name{font-family:'Fraunces',Georgia,serif;font-size:23px;font-weight:900}
-.door-desc{color:var(--muted);font-size:15px;flex:1}
-.door-go{color:var(--gold2);font-weight:800;font-size:15px}
+.door:focus-visible{outline:2px solid var(--gold2);outline-offset:4px}
+.door-room{position:relative;display:block;height:238px;border-radius:10px;perspective:950px;perspective-origin:50% 50%}
+.door-room::before{content:"";position:absolute;inset:0;border-radius:10px;background:linear-gradient(180deg,#2A3854,#111A2D);box-shadow:inset 0 0 0 2px rgba(201,162,75,.38), inset 0 0 0 9px #0A0F1D, inset 0 -18px 28px rgba(0,0,0,.48);pointer-events:none}
+.door-inside{position:absolute;inset:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:28px 24px;text-align:center;border-radius:5px;background:radial-gradient(circle at 50% 38%,rgba(255,221,141,.98),rgba(250,191,45,.72) 36%,rgba(128,83,18,.88) 74%,rgba(57,35,8,.96));box-shadow:inset 0 0 42px rgba(255,244,190,.5), inset 0 -24px 38px rgba(59,32,0,.42);filter:brightness(.72);transition:filter .7s ease}
+.door-inside::after{content:"";position:absolute;left:12%;right:12%;bottom:18px;height:1px;background:rgba(69,42,0,.35)}
+.door:hover .door-inside,.door:focus-visible .door-inside,.door.open .door-inside{filter:brightness(1.08)}
+.door-leaf{position:absolute;inset:11px;display:block;border-radius:5px;background:linear-gradient(105deg,#24365C 0%,#16243F 48%,#0D1729 100%);border:1px solid rgba(226,190,101,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.13), inset 0 -18px 28px rgba(0,0,0,.38), 8px 10px 22px rgba(0,0,0,.34);transform-origin:left center;transform:rotateY(0deg);transition:transform .7s cubic-bezier(.22,.75,.25,1), box-shadow .7s ease;z-index:2}
+.door:hover .door-leaf,.door:focus-visible .door-leaf,.door.open .door-leaf{transform:rotateY(-84deg);box-shadow:inset 0 1px 0 rgba(255,255,255,.1), inset 0 -18px 28px rgba(0,0,0,.34), 2px 8px 16px rgba(0,0,0,.3)}
+.door-leaf::before,.door-leaf::after{content:"";position:absolute;left:-4px;width:7px;height:34px;border-radius:3px;background:linear-gradient(180deg,#F1D384,#8C6B23);box-shadow:0 2px 5px rgba(0,0,0,.45)}
+.door-leaf::before{top:34px}
+.door-leaf::after{bottom:34px}
+.door-panel{position:absolute;left:22px;right:22px;border:1px solid rgba(226,190,101,.52);border-radius:4px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(0,0,0,.16));box-shadow:inset 0 2px 8px rgba(0,0,0,.38), inset 0 -1px 0 rgba(255,255,255,.05);pointer-events:none}
+.door-panel-top{top:20px;height:54px}
+.door-panel-bottom{bottom:20px;height:54px}
+.door-plate{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(100% - 52px);padding:9px 8px;border-radius:4px;background:linear-gradient(180deg,#F3D98B,#B98F2F);color:#211704;font-family:'Fraunces',Georgia,serif;font-size:19px;font-weight:900;line-height:1.15;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.42), inset 0 1px 0 rgba(255,255,255,.65);pointer-events:none}
+.door-knob{position:absolute;right:17px;top:calc(50% + 43px);width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF0B3,#D9A92F 48%,#6E5010);box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 0 4px rgba(201,162,75,.14);pointer-events:none}
+.door-summary{display:flex;flex-direction:column;gap:4px;padding:16px 4px 10px}
+.door-name{font-family:'Fraunces',Georgia,serif;font-size:23px;font-weight:900;line-height:1.15}
+.door-tag{color:var(--muted);font-size:14.5px;line-height:1.45}
+.door-open-hint{color:var(--gold2);font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;margin-top:5px}
+.door-desc{color:#2B1C02;font-size:16.5px;font-weight:700;line-height:1.5}
+.door-go{color:#3A2700;font-weight:900;font-size:15.5px;border-bottom:2px solid rgba(58,39,0,.55);padding-bottom:2px}
 .doors-note{text-align:center;color:var(--muted);font-size:14.5px;margin-top:26px}
 .doors-note a{color:var(--gold2);font-weight:700}
 
@@ -88,9 +110,11 @@ img{max-width:100%}
 .about p{color:var(--muted);font-size:17px;margin-bottom:14px}
 .contact{text-align:center;padding-bottom:30px}
 .contact p{color:var(--muted);font-size:17px;margin-bottom:22px}
-.socials{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-.socials a{color:var(--muted);text-decoration:none;font-weight:700;font-size:15px}
-.socials a:hover{color:var(--gold2)}
+.socials{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.socials a{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid rgba(201,162,75,.48);border-radius:50%;background:rgba(255,255,255,.035);color:var(--muted);text-decoration:none;transition:color .18s ease,border-color .18s ease,background .18s ease,transform .18s ease}
+.socials a:hover,.socials a:focus-visible{color:var(--gold2);border-color:var(--gold2);background:rgba(201,162,75,.12);transform:translateY(-2px)}
+.socials a:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}
+.social-icon{width:21px;height:21px;fill:currentColor;display:block}
 
 footer{position:relative;z-index:1;text-align:center;color:#77839A;font-size:13.5px;padding:44px 20px 40px;margin-top:40px;border-top:1px solid var(--line)}
 
@@ -108,5 +132,5 @@ footer{position:relative;z-index:1;text-align:center;color:#77839A;font-size:13.
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .r1,.r2,.r3,.r4,.orbit-stage,.orbit-stage img,.holo{animation:none}
-  .door{transition:none}
+  .door,.door-leaf,.door-inside,.socials a{transition:none}
 }
