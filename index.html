@@ -704,18 +704,21 @@ try{window.HL3D_DATA.lines[0].glyphs[4].contours=[[["M",784,1080],["L",458,0],["
     glow.scale.set(4.2,4.2,1);
     rig.add(glow);
 
-    /* orbit rings — tilted, gold + white */
+    /* orbit rings — tilted, gold + white. Own group, NOT a child of the rotating
+       rig: fixed tilts, centred above the mark, sized so no arc can ever reach
+       the headline band (Collin 2026-11-16: lines were crossing the words). */
+    var ringsGroup = new THREE.Group(); scene.add(ringsGroup);
     var ringDefs = [
-      { r: 2.3, color: GOLD,  tiltX: 1.15, tiltZ: 0.25, speed: 0.25 },
-      { r: 3.2, color: WHITE, tiltX: 1.35, tiltZ: -0.4, speed: -0.17 },
-      { r: 4.1, color: GOLD,  tiltX: 0.95, tiltZ: 0.65, speed: 0.11 }
+      { r: 1.55, color: GOLD,  tiltX: 0.72, tiltZ: 0.25, speed: 0.25 },
+      { r: 1.85, color: WHITE, tiltX: 0.85, tiltZ: -0.4, speed: -0.17 },
+      { r: 2.1, color: GOLD, tiltX: 0.55, tiltZ: 0.45, speed: 0.11 }
     ];
     ringDefs.forEach(function(d){
       var geo = new THREE.BufferGeometry().setFromPoints(ringPoints(d.r, 128));
       var line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: d.color, transparent: true, opacity: 0.5 }));
       var holder = new THREE.Group();
       holder.rotation.x = d.tiltX; holder.rotation.z = d.tiltZ;
-      holder.add(line); rig.add(holder);
+      holder.add(line); ringsGroup.add(holder);
       var sat = new THREE.Mesh(
         new THREE.SphereGeometry(0.11, 16, 16),
         new THREE.MeshBasicMaterial({ color: d.color })
@@ -757,6 +760,8 @@ try{window.HL3D_DATA.lines[0].glyphs[4].contours=[[["M",784,1080],["L",458,0],["
       rig.position.y = rigState.y + (reduced ? 0 : Math.sin(t * 0.5) * 0.09);
       rig.rotation.y += rigState.extraRotY * 0.0; /* scrub rotation applied below via group wrapper */
       rig.scale.setScalar(rigState.scale);
+      ringsGroup.position.set(rig.position.x, rig.position.y + 0.65 * rigState.scale, 0);
+      ringsGroup.scale.setScalar(rigState.scale);
       if (HL.ready){
         HL.group.position.y = (HL.baseY || 0) + HL.state.dy + (reduced ? 0 : Math.sin(t * 0.5) * 0.05);
         HL.group.rotation.y = HL.rotY + (reduced ? 0 : Math.sin(t * 0.13) * 0.025);
