@@ -148,6 +148,7 @@ opacity:.34;filter:brightness(.62) saturate(.85);
 -webkit-mask-image:radial-gradient(ellipse 108% 90% at 50% 40%,#000 22%,transparent 74%);
 mask-image:radial-gradient(ellipse 108% 90% at 50% 40%,#000 22%,transparent 74%)}
 </style>
+<style>/* film grain overlay */
 #grain{position:fixed;inset:-50%;z-index:3;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 9s steps(6) infinite}
 @keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,2%)}40%{transform:translate(2%,-1%)}60%{transform:translate(-1%,-2%)}80%{transform:translate(1%,2%)}}
 </style>
