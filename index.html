@@ -167,6 +167,13 @@ text-shadow:-0.005em -0.005em 0 rgba(246,247,249,.30),
    geometry build fails, the h1 simply shows flat — an honest fallback. */
 #hero h1, #hero h1 .thin{ text-shadow: none; }
 body.has-3d #hero h1{ color: transparent; }</style>
+<style>
+@media(max-width:820px){
+  #gl{display:none}
+  #hero h1{font-size:clamp(46px,13.8vw,64px)}
+  .hero-mark{width:min(190px,44vw);margin-top:6vh}
+}
+</style>
 </head>
 <body id="top">
 
@@ -657,6 +664,7 @@ try{window.HL3D_DATA.lines[0].glyphs[4].contours=[[["M",784,1080],["L",458,0],["
   }
 
   try {
+    if (window.matchMedia('(max-width: 820px)').matches) throw new Error('flat-mobile');
     var canvas = document.getElementById('gl');
     renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
